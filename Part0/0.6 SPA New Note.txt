@@ -1,0 +1,15 @@
+The following happens when a new note is added to the SPA version of the notes app:
+
+(New note is submitted)
+- JS takes input and creates a new note object with the data and creates a new Date object
+- JS pushes new note object to local variable "notes" which has the previous notes recieved from the server
+- input box is cleared of the previous data (reset to being empty)
+- Old ul of notes is removed and new ul of notes is created and added to the DOM
+- new note is sent to server
+
+browser -> server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server --> browser: Responds with the message "note created"
+
+note over browser:
+browser sends the new note in JSON format along with a the time it was created
+end note
