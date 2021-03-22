@@ -1,0 +1,24 @@
+The following happens when a new note is created:
+
+browser -> server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note | Form Data = note: "new note"
+server --> browser: STATUS CODE 302 REDIRECT LOCATION: /exampleapp/notes
+
+note over browser:
+browser sends new note in the request's body
+server extracts new note from request's body and adds it to notes object
+server then tells browser to reload notes page with new note added
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ...]
+
+note over browser:
+after new note is added, regular loading takes place
+end note
