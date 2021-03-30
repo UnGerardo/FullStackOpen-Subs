@@ -7,7 +7,10 @@ function Button({ text, handleClick }) {
 }
 
 function Statistic({ text, data }) {
-  return <p>{text} {data}</p>
+  return <tr>
+            <td>{text}</td> 
+            <td>{data}</td>
+          </tr>
 }
 
 function Statistics({ goodCount, neutralCount, badCount }) {
@@ -16,12 +19,14 @@ function Statistics({ goodCount, neutralCount, badCount }) {
     return (
       <>
         <h1>statistics</h1>
-        <Statistic text='good' data={goodCount} />
-        <Statistic text='neutral' data={neutralCount} />
-        <Statistic text='bad' data={badCount} />
-        <Statistic text='all' data={goodCount + neutralCount + badCount} />
-        <Statistic text='average' data={(goodCount - badCount)/(goodCount + neutralCount + badCount)} />
-        <Statistic text='positive' data={`${goodCount/(goodCount + neutralCount + badCount) * 100} %`} />
+        <table>
+          <Statistic text='good' data={goodCount} />
+          <Statistic text='neutral' data={neutralCount} />
+          <Statistic text='bad' data={badCount} />
+          <Statistic text='all' data={goodCount + neutralCount + badCount} />
+          <Statistic text='average' data={((goodCount - badCount)/(goodCount + neutralCount + badCount)).toFixed(1)} />
+          <Statistic text='positive' data={`${(goodCount/(goodCount + neutralCount + badCount) * 100).toFixed(1)} %`} />
+        </table>
       </>
     );
   } else {
