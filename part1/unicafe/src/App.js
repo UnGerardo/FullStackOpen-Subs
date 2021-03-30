@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
 
 function Statistics({ goodCount, neutralCount, badCount }) {
-  return (
-    <div className="App">
-      <h1>statistics</h1>
-      <p>good {goodCount}</p>
-      <p>neutral {neutralCount}</p>
-      <p>bad {badCount}</p>
-      <p>all {goodCount + neutralCount + badCount}</p>
-      <p>average {(goodCount - badCount)/(goodCount + neutralCount + badCount)}</p>
-      <p>positive {goodCount/(goodCount + neutralCount + badCount) * 100} %</p>
-    </div>
-  );
+
+  if(goodCount || neutralCount || badCount) {
+    return (
+      <>
+        <h1>statistics</h1>
+        <p>good {goodCount}</p>
+        <p>neutral {neutralCount}</p>
+        <p>bad {badCount}</p>
+        <p>all {goodCount + neutralCount + badCount}</p>
+        <p>average {(goodCount - badCount)/(goodCount + neutralCount + badCount)}</p>
+        <p>positive {goodCount/(goodCount + neutralCount + badCount) * 100} %</p>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <h1>statistics</h1>
+        <p>No feedback given</p>
+      </>
+    );
+  }
 }
 
 function App() {
