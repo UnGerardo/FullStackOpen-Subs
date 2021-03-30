@@ -16,6 +16,9 @@ function App() {
       <p>good {goodCount}</p>
       <p>neutral {neutralCount}</p>
       <p>bad {badCount}</p>
+      <p>all {goodCount + neutralCount + badCount}</p>
+      <p>average {(goodCount - badCount)/(goodCount + neutralCount + badCount)}</p>
+      <p>positive {goodCount/(goodCount + neutralCount + badCount) * 100} %</p>
     </div>
   );
 }
