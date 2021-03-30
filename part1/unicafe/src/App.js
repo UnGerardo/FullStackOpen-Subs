@@ -20,12 +20,14 @@ function Statistics({ goodCount, neutralCount, badCount }) {
       <>
         <h1>statistics</h1>
         <table>
-          <Statistic text='good' data={goodCount} />
-          <Statistic text='neutral' data={neutralCount} />
-          <Statistic text='bad' data={badCount} />
-          <Statistic text='all' data={goodCount + neutralCount + badCount} />
-          <Statistic text='average' data={((goodCount - badCount)/(goodCount + neutralCount + badCount)).toFixed(1)} />
-          <Statistic text='positive' data={`${(goodCount/(goodCount + neutralCount + badCount) * 100).toFixed(1)} %`} />
+          <tbody>
+            <Statistic text='good' data={goodCount} />
+            <Statistic text='neutral' data={neutralCount} />
+            <Statistic text='bad' data={badCount} />
+            <Statistic text='all' data={goodCount + neutralCount + badCount} />
+            <Statistic text='average' data={((goodCount - badCount)/(goodCount + neutralCount + badCount)).toFixed(1)} />
+            <Statistic text='positive' data={`${(goodCount/(goodCount + neutralCount + badCount) * 100).toFixed(1)} %`} />
+          </tbody>
         </table>
       </>
     );
