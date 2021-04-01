@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
 
-const Persons = ({ persons, search }) => {
+const Persons = ({ persons, setPersons, search }) => {
+
+    useEffect(() => {
+        axios.get('http://localhost:3001/persons')
+             .then(response => setPersons(response.data))
+    }, [])
 
     return (
         <>
