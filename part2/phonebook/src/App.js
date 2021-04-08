@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios';
+import requests from './services/requests'
 import Filter from './Filter';
 import PersonForm from './PersonForm';
 import Persons from './Persons';
@@ -16,12 +16,11 @@ const App = () => {
     if((persons.filter(person => person.name === newName)).length) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      axios.post('http://localhost:3001/persons', {
+      requests.addPerson({
         name: newName,
         number: newNumber,
         id: persons.length + 1
       })
-        .then(response => console.log(response.data))
       setPersons(persons.concat({ name: newName, number: newNumber, id: persons.length + 1 }));
       setNewName('');
       setNewNumber('');
@@ -29,8 +28,8 @@ const App = () => {
   }
   
   useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-         .then(response => setPersons(response.data))
+    requests.getPersons()
+            .then(persons => setPersons(persons));
   }, [])
 
   return (
