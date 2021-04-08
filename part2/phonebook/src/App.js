@@ -14,7 +14,7 @@ const App = () => {
     event.preventDefault();
     
     if((persons.filter(person => person.name === newName)).length) {
-      alert(`${newName} is already added to phonebook`);
+      updatePerson();
     } else {
       requests.addPerson({
         name: newName,
@@ -30,12 +30,23 @@ const App = () => {
   useEffect(() => {
     requests.getPersons()
             .then(persons => setPersons(persons));
-  }, [])
+  }, [persons])
 
   const deletePerson = (name, id) => {
     if(window.confirm(`Delete ${name}?`)) {
       requests.deleteRequest(id);
       setPersons(persons.filter(person => person.id !== id));
+    }
+  }
+
+  const updatePerson = () => {
+    if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
+      const updatedPerson = persons.filter(person => person.name === newName);
+      updatedPerson[0].number = newNumber;
+      requests.updateRequest(updatedPerson[0].id, updatedPerson[0]);
+      setPersons(persons.filter(person => person.name !== newName));
+      setNewName('');
+      setNewNumber('');
     }
   }
 
