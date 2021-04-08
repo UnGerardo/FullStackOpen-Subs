@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Countries = ({ countries, setCountries }) => {
+const Countries = ({ countries, setCountries, temp, windSpeed, windDirection, weatherImgUrl }) => {
 
     const showCountryInfo = (name) => {
         const countryIndex = countries.findIndex(country => country.name === name);
@@ -27,6 +27,10 @@ const Countries = ({ countries, setCountries }) => {
                 {countries[0].languages.map(language => <li key={language.name}>{language.name}</li>)}
                 </ul>
                 <img src={`${countries[0].flag}`} alt={`${countries[0].name} FLAG`} />
+                <h3>Weather in {countries[0].capital}</h3>
+                <p>Temperature: {temp} degrees Celcius</p>
+                <img src={`http://openweathermap.org/img/wn/${weatherImgUrl}@2x.png`} alt="weather icon" />
+                <p>Wind: {windSpeed} m/s {windDirection} degrees</p>
             </div>
         );
     } else if (countries.length <= 10) {
