@@ -11,6 +11,10 @@ const addPerson = (newPerson) => {
     return axios.post(baseUrl, newPerson);
 }
 
-const requests = { getPersons, addPerson }
+const deleteRequest = (id) => {
+    axios.delete(`${baseUrl}/${id}`);
+}
+
+const requests = { getPersons, addPerson, deleteRequest }
 
 export default requests;

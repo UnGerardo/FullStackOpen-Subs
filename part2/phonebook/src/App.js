@@ -19,9 +19,9 @@ const App = () => {
       requests.addPerson({
         name: newName,
         number: newNumber,
-        id: persons.length + 1
+        id: persons[persons.length - 1].id + 1
       })
-      setPersons(persons.concat({ name: newName, number: newNumber, id: persons.length + 1 }));
+      setPersons(persons.concat({ name: newName, number: newNumber, id: persons[persons.length - 1].id + 1 }));
       setNewName('');
       setNewNumber('');
     }
@@ -32,6 +32,13 @@ const App = () => {
             .then(persons => setPersons(persons));
   }, [])
 
+  const deletePerson = (name, id) => {
+    if(window.confirm(`Delete ${name}?`)) {
+      requests.deleteRequest(id);
+      setPersons(persons.filter(person => person.id !== id));
+    }
+  }
+
   return (
     <>
       <h2>Phonebook</h2>
@@ -41,7 +48,7 @@ const App = () => {
       <PersonForm addName={addName} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />
 
       <h2>Numbers</h2>
-      <Persons persons={persons} setPersons={setPersons} search={search} />
+      <Persons persons={persons} setPersons={setPersons} search={search} deletePerson={deletePerson} />
     </>
   )
 }
