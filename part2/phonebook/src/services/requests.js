@@ -16,7 +16,7 @@ const deleteRequest = (id) => {
 }
 
 const updateRequest = (id, updatedPerson) => {
-    axios.put(`${baseUrl}/${id}`, updatedPerson);
+    return axios.put(`${baseUrl}/${id}`, updatedPerson)
 }
 
 const requests = { getPersons, addPerson, deleteRequest, updateRequest }
