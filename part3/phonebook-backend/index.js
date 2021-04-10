@@ -29,5 +29,9 @@ app.get('/api/persons', (request, response) => {
     response.json(persons);
 });
 
+app.get('/info', (request, response) => {
+    response.send(`<p>Phonebook has info for ${persons.length} people.</p> <p>${new Date()}</p>`)
+})
+
 app.listen(3001);
 console.log('Listening on port 3001');
