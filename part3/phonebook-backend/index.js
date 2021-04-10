@@ -30,9 +30,13 @@ app.get('/api/persons', (request, response) => {
 });
 
 app.get('/api/persons/:id', (request, response) => {
-    console.log(request.params);
-    const id = request.params.id;
-    response.json(persons.find(person => person.id = id));
+    const id = Number(request.params.id);
+    const person = persons.find(person => person.id === id);
+    
+    if(person) {
+        return response.json(person);
+    }
+    response.status(404).end();
 });
 
 app.get('/info', (request, response) => {
