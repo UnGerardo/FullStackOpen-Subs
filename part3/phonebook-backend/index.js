@@ -47,6 +47,17 @@ app.get('/info', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
     const newPerson = request.body;
+
+    if(!newPerson.name || !newPerson.number) {
+        return response.status(404).json({
+            error: 'content missing'
+        });
+    } else if(persons.find(person => person.name === newPerson.name)) {
+        return response.status(404).json({
+            error: 'name already in phonebook'
+        });
+    }
+
     persons = persons.concat({
         id: Math.floor(Math.random() * 1000000 + 1),
         name: newPerson.name,
