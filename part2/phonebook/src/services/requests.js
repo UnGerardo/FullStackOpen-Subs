@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:3001/api/persons';
+const baseUrl = 'https://fso-part3-gl.herokuapp.com/api/persons';
 
 const getPersons = () => {
     const request = axios.get(baseUrl)
