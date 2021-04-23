@@ -27,40 +27,35 @@ app.get('/api/persons', (request, response) => {
         })
 });
 
-app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id);
-    const person = persons.find(person => person.id === id);
+// app.get('/api/persons/:id', (request, response) => {
+//     const id = Number(request.params.id);
+//     const person = persons.find(person => person.id === id);
     
-    if(person) {
-        return response.json(person);
-    }
-    response.status(404).end();
-});
+//     if(person) {
+//         return response.json(person);
+//     }
+//     response.status(404).end();
+// });
 
-app.get('/info', (request, response) => {
-    response.send(`<p>Phonebook has info for ${persons.length} people.</p> <p>${new Date()}</p>`)
-})
+// app.get('/info', (request, response) => {
+//     response.send(`<p>Phonebook has info for ${persons.length} people.</p> <p>${new Date()}</p>`)
+// })
 
 app.post('/api/persons', (request, response) => {
     const newPerson = request.body;
 
     if(!newPerson.name || !newPerson.number) {
-        return response.status(404).json({
-            error: 'content missing'
-        });
-    } else if(persons.find(person => person.name === newPerson.name)) {
-        return response.status(404).json({
-            error: 'name already in phonebook'
-        });
+        return response.status(404).json({ error: 'content missing' });
     }
 
-    persons = persons.concat({
-        id: Math.floor(Math.random() * 1000000 + 1),
+    const person = Person({
         name: newPerson.name,
         number: newPerson.number
-    })
+    });
 
-    response.status(201).end();
+    person.save().then(savedPerson => {
+        response.status(201).end();
+    });
 })
 
 app.delete('/api/persons/:id', (request, response) => {
