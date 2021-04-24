@@ -22,7 +22,8 @@ const App = () => {
       requests.addPerson({
         name: newName,
         number: newNumber,
-      }).then(newPerson => setPersons(persons.concat({ id: newPerson.data.id.toString(), name: newPerson.data.name, number: newPerson.data.number })) );
+      }).then(newPerson => setPersons(persons.concat({ id: newPerson.data.id.toString(), name: newPerson.data.name, number: newPerson.data.number })))
+        .catch((error) => console.log(error));
       setMessage(`Added ${newName}`);
       setNotificationType('notification');
       setTimeout(() => setMessage(''), 3000);

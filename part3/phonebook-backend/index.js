@@ -45,7 +45,7 @@ app.post('/api/persons', (request, response) => {
     const newPerson = request.body;
 
     if(!newPerson.name || !newPerson.number) {
-        return response.status(404).json({ error: 'content missing' });
+        return response.status(400).json({ error: 'content missing' });
     }
 
     const person = Person({
@@ -66,7 +66,7 @@ app.delete('/api/persons/:id', (request, response) => {
             console.log(`------------------\nDELETED ${person.name}\n------------------`)
             response.status(204).end();
         })
-        .catch(error => console.log(`ERROR DELETING ${id}`, error));
+        .catch(error => next(error));
 })
 
 const PORT = process.env.PORT || 3001;
@@ -74,3 +74,15 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+const errorHandler = (error, request, response, next) => {
+    console.log(error.message);
+
+    if(error.name === 'CastError') {
+        return response.status(400).send({ error: 'Malformatted id '});
+    }
+
+    next(error);
+}
+
+app.use(errorHandler);
