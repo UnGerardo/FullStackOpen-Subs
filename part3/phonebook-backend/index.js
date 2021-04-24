@@ -27,19 +27,20 @@ app.get('/api/persons', (request, response) => {
         })
 });
 
-// app.get('/api/persons/:id', (request, response) => {
-//     const id = Number(request.params.id);
-//     const person = persons.find(person => person.id === id);
-    
-//     if(person) {
-//         return response.json(person);
-//     }
-//     response.status(404).end();
-// });
+app.get('/api/persons/:id', (request, response) => {
+    Person.findById(request.params.id)
+        .then(person => {
+            return response.json(person);
+        })
+        .catch(error => next(error));
+});
 
-// app.get('/info', (request, response) => {
-//     response.send(`<p>Phonebook has info for ${persons.length} people.</p> <p>${new Date()}</p>`)
-// })
+app.get('/info', (request, response) => {
+    Person.find({})
+        .then(persons => {
+            response.send(`<p>Phonebook has info for ${persons.length} people.</p> <p>${new Date()}</p>`);
+        })
+})
 
 app.post('/api/persons', (request, response) => {
     const newPerson = request.body;
