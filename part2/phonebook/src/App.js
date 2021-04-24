@@ -24,9 +24,11 @@ const App = () => {
         number: newNumber,
       }).then(newPerson => setPersons(persons.concat({ id: newPerson.data.id.toString(), name: newPerson.data.name, number: newPerson.data.number })))
         .catch((error) => console.log(error));
+
       setMessage(`Added ${newName}`);
       setNotificationType('notification');
       setTimeout(() => setMessage(''), 3000);
+
       setNewName('');
       setNewNumber('');
     }
@@ -46,26 +48,29 @@ const App = () => {
 
   const updatePerson = () => {
     if(window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)) {
-      const updatedPerson = persons.filter(person => person.name === newName);
-      updatedPerson[0].number = newNumber;
-      requests.updateRequest(updatedPerson[0].id, updatedPerson[0])
-              .then(response => {
+      const id = persons.filter(person => person.name === newName)[0].id;
+
+      requests.updateRequest(id, { number: newNumber })
+              .then(updatedPerson => {
+
                 setMessage(`Updated ${newName}`);
                 setNotificationType('notification');
                 setTimeout(() => setMessage(''), 3000);
+
                 setPersons(persons.map(person => {
-                  if(person.id === updatedPerson[0].id) {
-                    return updatedPerson[0];
+                  if(person.id === id) {
+                    return updatedPerson.data;
                   }
                   return person;
                 }));
               })
               .catch(error => {
                 setMessage(`Information of ${newName} has already been removed from the server`);
-                setPersons(persons.filter(person => person.id !== updatedPerson[0].id));
-                setTimeout(() => setMessage(''), 3000);
                 setNotificationType('error');
-              })
+                setTimeout(() => setMessage(''), 3000);
+
+                setPersons(persons.filter(person => person.id !== id));
+              });
       setNewName('');
       setNewNumber('');
     }

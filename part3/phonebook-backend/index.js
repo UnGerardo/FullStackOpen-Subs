@@ -58,10 +58,19 @@ app.post('/api/persons', (request, response) => {
     });
 })
 
+app.put('/api/persons/:id', (request, response) => {
+    const newNumber = { number: request.body.number }; 
+
+    Person.findByIdAndUpdate(request.params.id, newNumber, { new: true })
+        .then(updatedPerson => {
+            response.json(updatedPerson);
+        })
+        .catch(error => next(error));
+});
+
 app.delete('/api/persons/:id', (request, response) => {
-    const id = request.params.id;
     
-    Person.findByIdAndRemove({ _id: id })
+    Person.findByIdAndRemove(request.params.id)
         .then(person => {
             console.log(`------------------\nDELETED ${person.name}\n------------------`)
             response.status(204).end();
