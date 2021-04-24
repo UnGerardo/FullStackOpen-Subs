@@ -54,15 +54,19 @@ app.post('/api/persons', (request, response) => {
     });
 
     person.save().then(savedPerson => {
-        response.status(201).end();
+        response.status(201).json(savedPerson);
     });
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id);
-    persons = persons.filter(person => person.id !== id);
-
-    response.status(204).end();
+    const id = request.params.id;
+    
+    Person.findByIdAndRemove({ _id: id })
+        .then(person => {
+            console.log(`------------------\nDELETED ${person.name}\n------------------`)
+            response.status(204).end();
+        })
+        .catch(error => console.log(`ERROR DELETING ${id}`, error));
 })
 
 const PORT = process.env.PORT || 3001;

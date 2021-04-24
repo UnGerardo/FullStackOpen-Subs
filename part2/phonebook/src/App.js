@@ -22,9 +22,7 @@ const App = () => {
       requests.addPerson({
         name: newName,
         number: newNumber,
-        id: persons[persons.length - 1].id + 1
-      })
-      setPersons(persons.concat({ name: newName, number: newNumber, id: persons[persons.length - 1].id + 1 }));
+      }).then(newPerson => setPersons(persons.concat({ id: newPerson.data.id.toString(), name: newPerson.data.name, number: newPerson.data.number })) );
       setMessage(`Added ${newName}`);
       setNotificationType('notification');
       setTimeout(() => setMessage(''), 3000);
