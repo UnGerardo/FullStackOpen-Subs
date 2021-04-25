@@ -16,10 +16,15 @@ const personSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+        minlength: 3
     },
-    number: String,
+    number: {
+        type: String,
+        minlength: 8,
+    },
 });
 
+//validation to have unique data fields
 personSchema.plugin(uniqueValidator);
 
 personSchema.set('toJSON', {

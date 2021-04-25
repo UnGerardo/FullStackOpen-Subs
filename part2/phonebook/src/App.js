@@ -22,12 +22,18 @@ const App = () => {
       requests.addPerson({
         name: newName,
         number: newNumber,
-      }).then(newPerson => setPersons(persons.concat({ id: newPerson.data.id.toString(), name: newPerson.data.name, number: newPerson.data.number })))
-        .catch((error) => console.log(error));
-
-      setMessage(`Added ${newName}`);
-      setNotificationType('notification');
-      setTimeout(() => setMessage(''), 3000);
+      }).then(newPerson => {
+          setPersons(persons.concat({ id: newPerson.data.id.toString(), name: newPerson.data.name, number: newPerson.data.number }));
+          
+          setMessage(`Added ${newName}`);
+          setNotificationType('notification');
+          setTimeout(() => setMessage(''), 3000);
+        })
+        .catch((error) => {
+          setMessage(`${error.response.data.message}`);
+          setNotificationType('error');
+          setTimeout(() => setMessage(''), 3000);
+        });
 
       setNewName('');
       setNewNumber('');
@@ -65,11 +71,18 @@ const App = () => {
                 }));
               })
               .catch(error => {
-                setMessage(`Information of ${newName} has already been removed from the server`);
-                setNotificationType('error');
-                setTimeout(() => setMessage(''), 3000);
 
-                setPersons(persons.filter(person => person.id !== id));
+                if(error.response.data.name === 'ValidationError') {
+                  setMessage(`${error.response.data.message}`);
+                  setNotificationType('error');
+                  setTimeout(() => setMessage(''), 3000);
+                } else {
+                  setMessage(`Information of ${newName} has already been removed from the server`);
+                  setNotificationType('error');
+                  setTimeout(() => setMessage(''), 3000);
+                  
+                  setPersons(persons.filter(person => person.id !== id));
+                }
               });
       setNewName('');
       setNewNumber('');
