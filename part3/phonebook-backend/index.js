@@ -5,7 +5,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const Person = require('./models/person');
 
-app = express();
+const app = express();
 
 app.use(cors())
 app.use(express.json());
