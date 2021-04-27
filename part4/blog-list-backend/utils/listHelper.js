@@ -29,7 +29,7 @@ const favoriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs) => {
-    if(blogs.length === 0) return "";
+    if(blogs.length === 0) return {};
 
     const blogTracker = {};
 
@@ -40,7 +40,6 @@ const mostBlogs = (blogs) => {
             blogTracker[blogs[i].author] = 1;
         }
     }
-    logger.info(blogTracker);
 
     const authors = Object.keys(blogTracker);
     let author = authors[0];
@@ -57,9 +56,39 @@ const mostBlogs = (blogs) => {
     };
 }
 
+const mostLikes = (blogs) => {
+    if(blogs.length === 0) return 0;
+
+    const likesTracker = {};
+
+    for(let i = 0; i < blogs.length; i++) {
+        if(likesTracker[blogs[i].author]) {
+            likesTracker[blogs[i].author] += blogs[i].likes;
+        } else {
+            likesTracker[blogs[i].author] = blogs[i].likes;
+        }
+    }
+
+    const authors = Object.keys(likesTracker);
+
+    let author = authors[0];
+
+    for(let i = 1; i < author.length; i++) {
+        if(likesTracker[authors[i]] > likesTracker[author]) {
+            author = authors[i];
+        }
+    }
+
+    return {
+        author: author,
+        likes: likesTracker[author]
+    };
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 };
