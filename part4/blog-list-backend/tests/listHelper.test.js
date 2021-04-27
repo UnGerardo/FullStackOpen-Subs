@@ -103,3 +103,23 @@ describe('most liked', () => {
         });
     });
 });
+
+describe('most blogs', () => {
+    test('of emply list is empty string', () => {
+        expect(listHelper.mostBlogs([])).toBe("");
+    });
+
+    test('of one blog returns the author with a blog value of one', () => {
+        expect(listHelper.mostBlogs(listWithOneBlog)).toEqual({
+            author: "Edsger W. Dijkstra",
+            blogs: 1
+        });
+    });
+
+    test('of a bigger list returns author with most blogs', () => {
+        expect(listHelper.mostBlogs(blogs)).toEqual({
+            author: "Robert C. Martin",
+            blogs: 3
+        });
+    });
+});

@@ -1,3 +1,4 @@
+const logger = require('./logger');
 
 const dummy = (blogs) => {
     return 1;
@@ -27,8 +28,38 @@ const favoriteBlog = (blogs) => {
     };
 }
 
+const mostBlogs = (blogs) => {
+    if(blogs.length === 0) return "";
+
+    const blogTracker = {};
+
+    for(let i = 0; i < blogs.length; i++) {
+        if(blogTracker[blogs[i].author]) {
+            blogTracker[blogs[i].author]++;
+        } else {
+            blogTracker[blogs[i].author] = 1;
+        }
+    }
+    logger.info(blogTracker);
+
+    const authors = Object.keys(blogTracker);
+    let author = authors[0];
+
+    for(let i = 1; i < author.length; i++) {
+        if(blogTracker[authors[i]] > blogTracker[author]) {
+            author = authors[i];
+        }
+    }
+
+    return {
+        author: author,
+        blogs: blogTracker[author]
+    };
+}
+
 module.exports = {
     dummy,
     totalLikes,
-    favoriteBlog
+    favoriteBlog,
+    mostBlogs
 };
