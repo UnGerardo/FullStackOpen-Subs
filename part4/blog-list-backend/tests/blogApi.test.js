@@ -16,7 +16,7 @@ const initialBlogs = [
         title: 'Best blog',
         author: 'Sanson',
         url: 'https://blogs.com/best-blog',
-        like: 99999
+        likes: 99999
     }
 ];
 
@@ -120,6 +120,21 @@ describe('DELETE Tests', () => {
         expect(authorsAfter).not.toContain('Sanson');
     });
 
+});
+
+describe('PUT Tests', () => {
+    test('Updating an individual blog posts likes', async () => {
+        const firstResponse = await api.get('/api/blogs');
+
+        expect(firstResponse.body[1].likes).toBe(99999);
+
+        await api.put(`/api/blogs/${firstResponse.body[1].id}`)
+                .send({ likes: 25 });
+
+        const secondResponse = await api.get('/api/blogs');
+
+        expect(secondResponse.body[1].likes).toBe(25);
+    });
 });
 
 afterAll(() => {
