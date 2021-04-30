@@ -12,6 +12,10 @@ blogsRouter.get('/', (request, response) => {
 blogsRouter.post('/', (request, response) => {
     const blog = new Blog(request.body);
 
+    if(!blog.title && !blog.url) {
+        return response.status(400).json({ message: "URL and Title are missing" });
+    }
+
     if(!blog.likes) {
         blog.likes = 0;
     }

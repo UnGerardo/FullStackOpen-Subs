@@ -81,7 +81,7 @@ describe('POST Tests', () => {
     test('POST request with out the -likes- property defaults it to zero', async () => {
         const {likes, ...newBlogWithoutLikes} = newBlog;
 
-        console.log(newBlogWithoutLikes);
+        expect(newBlogWithoutLikes.likes).not.toBeDefined();
 
         await api.post('/api/blogs')
                 .send(newBlogWithoutLikes)
@@ -94,7 +94,18 @@ describe('POST Tests', () => {
         expect(response.body[response.body.length - 1].likes).toBe(0);
     });
 
-    
+    test('POST request without title and url responsed with 400', async () => {
+        const {title, url, ...newBlogWithoutUrlAndTitle} = newBlog;
+
+        expect(newBlogWithoutUrlAndTitle.title).not.toBeDefined();
+        expect(newBlogWithoutUrlAndTitle.url).not.toBeDefined();
+
+        const response = await api.post('/api/blogs')
+                                .send(newBlogWithoutUrlAndTitle)
+                                .expect(400);
+        
+        expect(response.body).toEqual({ message: "URL and Title are missing" });
+    });
 
 });
 
