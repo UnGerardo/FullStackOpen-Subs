@@ -42,6 +42,15 @@ describe('GET Tests', () => {
                 .expect(200)
                 .expect('Content-Type', /application\/json/);
     });
+
+    test('Blogs returned have the property -id-', async () => {
+        const response = await api.get('/api/blogs')
+                                  .expect(200);
+
+        for(let i = 0; i < response.body.length; i++) {
+            expect(response.body[i].id).toBeDefined();
+        }
+    });
 });
 
 afterAll(() => {
