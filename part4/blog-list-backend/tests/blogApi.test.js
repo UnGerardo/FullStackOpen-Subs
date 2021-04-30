@@ -37,24 +37,20 @@ beforeEach(async () => {
 });
 
 describe('GET Tests', () => {
-    test('Correct number of blogs are returned', async () => {
-        const response = await api.get('/api/blogs')
-                                .expect(200)
-                                .expect('Content-Type', /application\/json/);
-        
-        expect(response.body).toHaveLength(initialBlogs.length);
-    });
-
     test('Blogs are returned in JSON', async () => {
         await api.get('/api/blogs')
                 .expect(200)
                 .expect('Content-Type', /application\/json/);
     });
 
+    test('Correct number of blogs are returned', async () => {
+        const response = await api.get('/api/blogs');
+        
+        expect(response.body).toHaveLength(initialBlogs.length);
+    });
+
     test('Blogs returned have the property -id-', async () => {
-        const response = await api.get('/api/blogs')
-                                  .expect(200)
-                                  .expect('Content-Type', /application\/json/);
+        const response = await api.get('/api/blogs');
 
         for(let i = 0; i < response.body.length; i++) {
             expect(response.body[i].id).toBeDefined();
@@ -105,6 +101,23 @@ describe('POST Tests', () => {
                                 .expect(400);
         
         expect(response.body).toEqual({ message: "URL and Title are missing" });
+    });
+
+});
+
+describe('DELETE Tests', () => {
+    test('DELETE by id deletes correct blog', async () => {
+        const firstResponse = await api.get('/api/blogs');
+
+        await api.delete(`/api/blogs/${firstResponse.body[1].id}`);
+
+        const secondResponse = await api.get('/api/blogs');
+
+        expect(secondResponse.body.length).toBe(firstResponse.body.length - 1);
+
+        const authorsAfter = secondResponse.body.map(blog => blog.author);
+
+        expect(authorsAfter).not.toContain('Sanson');
     });
 
 });
