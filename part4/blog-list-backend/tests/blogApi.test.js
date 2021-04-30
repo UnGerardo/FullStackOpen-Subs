@@ -18,7 +18,14 @@ const initialBlogs = [
         url: 'https://blogs.com/best-blog',
         like: 99999
     }
-]
+];
+
+const newBlog = {
+    title: 'New Blog',
+    author: 'Author',
+    url: 'https://blogs.com/new-blog',
+    likes: 10
+};
 
 beforeEach(async () => {
     await Blog.deleteMany({});
@@ -57,13 +64,6 @@ describe('GET Tests', () => {
 
 describe('POST Tests', () => {
     test('POST request creates a new blog post and saves data correctly', async () => {
-        const newBlog = {
-            title: 'New Blog',
-            author: 'Author',
-            url: 'https://blogs.com/new-blog',
-            likes: 0
-        };
-
         await api.post('/api/blogs')
                 .send(newBlog)
                 .expect(201)
@@ -77,6 +77,24 @@ describe('POST Tests', () => {
 
         expect(response.body[response.body.length - 1]).toEqual(newBlog);
     });
+
+    test('POST request with out the -likes- property defaults it to zero', async () => {
+        const {likes, ...newBlogWithoutLikes} = newBlog;
+
+        console.log(newBlogWithoutLikes);
+
+        await api.post('/api/blogs')
+                .send(newBlogWithoutLikes)
+                .expect(201)
+                .expect('Content-Type', /application\/json/);
+
+        const response = await api.get('/api/blogs');
+
+        expect(response.body[response.body.length - 1].likes).toBeDefined();
+        expect(response.body[response.body.length - 1].likes).toBe(0);
+    });
+
+    
 
 });
 
