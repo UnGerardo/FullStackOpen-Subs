@@ -33,6 +33,7 @@ describe('GET Tests', () => {
     test('Correct number of blogs are returned', async () => {
         const response = await api.get('/api/blogs')
                                 .expect(200)
+                                .expect('Content-Type', /application\/json/);
         
         expect(response.body).toHaveLength(initialBlogs.length);
     });
@@ -45,12 +46,38 @@ describe('GET Tests', () => {
 
     test('Blogs returned have the property -id-', async () => {
         const response = await api.get('/api/blogs')
-                                  .expect(200);
+                                  .expect(200)
+                                  .expect('Content-Type', /application\/json/);
 
         for(let i = 0; i < response.body.length; i++) {
             expect(response.body[i].id).toBeDefined();
         }
     });
+});
+
+describe('POST Tests', () => {
+    test('POST request creates a new blog post and saves data correctly', async () => {
+        const newBlog = {
+            title: 'New Blog',
+            author: 'Author',
+            url: 'https://blogs.com/new-blog',
+            likes: 0
+        };
+
+        await api.post('/api/blogs')
+                .send(newBlog)
+                .expect(201)
+                .expect('Content-Type', /application\/json/);
+
+        const response = await api.get('/api/blogs');
+
+        expect(response.body.length).toBe(initialBlogs.length + 1);
+
+        delete response.body[response.body.length - 1].id;
+
+        expect(response.body[response.body.length - 1]).toEqual(newBlog);
+    });
+
 });
 
 afterAll(() => {
